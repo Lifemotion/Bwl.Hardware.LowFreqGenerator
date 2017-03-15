@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-<ProjectGuid>{65F40B30-C906-4C2B-825A-22DA8A0AA3FC}</ProjectGuid>
+    <ProjectGuid>{65F40B30-C906-4C2B-825A-22DA8A0AA3FC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <StartupObject>Bwl.Hardware.LowFreqGenerator.App.My.MyApplication</StartupObject>
     <RootNamespace>Bwl.Hardware.LowFreqGenerator.App</RootNamespace>
@@ -52,13 +52,12 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include = "Bwl.Framework" >
-<HintPath>..\refs\bwl-framework\Bwl.Framework.dll</HintPath>
-</Reference>
-<Reference Include = "bwl.Network.ClientServer" >
-<HintPath>..\refs\bwl-framework\bwl.Network.ClientServer.dll</HintPath>
-</Reference>
-
+    <Reference Include="Bwl.Framework">
+      <HintPath>..\refs\bwl-framework\Bwl.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="bwl.Network.ClientServer">
+      <HintPath>..\refs\bwl-framework\bwl.Network.ClientServer.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -97,6 +96,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="App.resx">
+      <DependentUpon>App.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
@@ -116,12 +118,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-<ProjectReference Include = "..\Bwl.Hardware.LowFreqGenerator\Bwl.Hardware.LowFreqGenerator.vbproj">
-<Project>{7981D27B-88BD-421A-9FEB-969D4585035C}</Project>
-<Name>Bwl.Hardware.LowFreqGenerator</Name>
-</ProjectReference>
-</ItemGroup>
-
+    <ProjectReference Include="..\Bwl.Hardware.LowFreqGenerator\Bwl.Hardware.LowFreqGenerator.vbproj">
+      <Project>{7981D27B-88BD-421A-9FEB-969D4585035C}</Project>
+      <Name>Bwl.Hardware.LowFreqGenerator</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
