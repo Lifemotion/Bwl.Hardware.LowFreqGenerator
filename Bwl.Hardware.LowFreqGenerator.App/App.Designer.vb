@@ -22,6 +22,7 @@ Partial Class App
     'Не изменяйте ее в редакторе исходного кода.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.tbConnectionInfo = New System.Windows.Forms.TextBox()
         Me.bPlayOnce = New System.Windows.Forms.Button()
@@ -47,10 +48,15 @@ Partial Class App
         Me.bRepeat = New System.Windows.Forms.Button()
         Me.bStop = New System.Windows.Forms.Button()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.tState = New System.Windows.Forms.Timer(Me.components)
+        Me.rbTotalTime = New System.Windows.Forms.RadioButton()
+        Me.rbFreq = New System.Windows.Forms.RadioButton()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         CType(Me.pbSignalView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
         Me.SuspendLayout()
         '
         'logWriter
@@ -63,7 +69,7 @@ Partial Class App
         Me.GroupBox1.Controls.Add(Me.tbConnectionInfo)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 27)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(191, 47)
+        Me.GroupBox1.Size = New System.Drawing.Size(283, 47)
         Me.GroupBox1.TabIndex = 2
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Connection"
@@ -72,7 +78,7 @@ Partial Class App
         '
         Me.tbConnectionInfo.Location = New System.Drawing.Point(6, 19)
         Me.tbConnectionInfo.Name = "tbConnectionInfo"
-        Me.tbConnectionInfo.Size = New System.Drawing.Size(179, 20)
+        Me.tbConnectionInfo.Size = New System.Drawing.Size(271, 20)
         Me.tbConnectionInfo.TabIndex = 5
         '
         'bPlayOnce
@@ -86,12 +92,8 @@ Partial Class App
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.GroupBox4)
         Me.GroupBox2.Controls.Add(Me.bGenerate)
-        Me.GroupBox2.Controls.Add(Me.tbLevel)
-        Me.GroupBox2.Controls.Add(Me.Label3)
-        Me.GroupBox2.Controls.Add(Me.Label2)
-        Me.GroupBox2.Controls.Add(Me.tbFreq)
-        Me.GroupBox2.Controls.Add(Me.Label1)
         Me.GroupBox2.Controls.Add(Me.RadioButton7)
         Me.GroupBox2.Controls.Add(Me.RadioButton6)
         Me.GroupBox2.Controls.Add(Me.rbSlowDown)
@@ -99,7 +101,6 @@ Partial Class App
         Me.GroupBox2.Controls.Add(Me.rbTriangle)
         Me.GroupBox2.Controls.Add(Me.rbSquare)
         Me.GroupBox2.Controls.Add(Me.rbSine)
-        Me.GroupBox2.Controls.Add(Me.tbPeriod)
         Me.GroupBox2.Controls.Add(Me.lTime2)
         Me.GroupBox2.Controls.Add(Me.lTime1)
         Me.GroupBox2.Controls.Add(Me.lTime0)
@@ -122,7 +123,7 @@ Partial Class App
         '
         'tbLevel
         '
-        Me.tbLevel.Location = New System.Drawing.Point(241, 68)
+        Me.tbLevel.Location = New System.Drawing.Point(102, 65)
         Me.tbLevel.Name = "tbLevel"
         Me.tbLevel.Size = New System.Drawing.Size(52, 20)
         Me.tbLevel.TabIndex = 22
@@ -131,7 +132,7 @@ Partial Class App
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(169, 70)
+        Me.Label3.Location = New System.Drawing.Point(28, 67)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(44, 13)
         Me.Label3.TabIndex = 21
@@ -140,7 +141,7 @@ Partial Class App
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(169, 45)
+        Me.Label2.Location = New System.Drawing.Point(28, 42)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(47, 13)
         Me.Label2.TabIndex = 20
@@ -148,7 +149,8 @@ Partial Class App
         '
         'tbFreq
         '
-        Me.tbFreq.Location = New System.Drawing.Point(241, 42)
+        Me.tbFreq.Enabled = False
+        Me.tbFreq.Location = New System.Drawing.Point(102, 39)
         Me.tbFreq.Name = "tbFreq"
         Me.tbFreq.Size = New System.Drawing.Size(52, 20)
         Me.tbFreq.TabIndex = 19
@@ -156,7 +158,7 @@ Partial Class App
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(165, 20)
+        Me.Label1.Location = New System.Drawing.Point(26, 17)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(72, 13)
         Me.Label1.TabIndex = 18
@@ -230,13 +232,12 @@ Partial Class App
         Me.rbSine.Name = "rbSine"
         Me.rbSine.Size = New System.Drawing.Size(46, 17)
         Me.rbSine.TabIndex = 11
-        Me.rbSine.TabStop = True
         Me.rbSine.Text = "Sine"
         Me.rbSine.UseVisualStyleBackColor = True
         '
         'tbPeriod
         '
-        Me.tbPeriod.Location = New System.Drawing.Point(241, 17)
+        Me.tbPeriod.Location = New System.Drawing.Point(102, 14)
         Me.tbPeriod.Name = "tbPeriod"
         Me.tbPeriod.Size = New System.Drawing.Size(52, 20)
         Me.tbPeriod.TabIndex = 10
@@ -302,12 +303,54 @@ Partial Class App
         Me.GroupBox3.Controls.Add(Me.bRepeat)
         Me.GroupBox3.Controls.Add(Me.bStop)
         Me.GroupBox3.Controls.Add(Me.bPlayOnce)
+        Me.GroupBox3.Enabled = False
         Me.GroupBox3.Location = New System.Drawing.Point(672, 80)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(100, 285)
         Me.GroupBox3.TabIndex = 5
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Control"
+        '
+        'tState
+        '
+        Me.tState.Enabled = True
+        Me.tState.Interval = 500
+        '
+        'rbTotalTime
+        '
+        Me.rbTotalTime.AutoSize = True
+        Me.rbTotalTime.Checked = True
+        Me.rbTotalTime.Location = New System.Drawing.Point(10, 18)
+        Me.rbTotalTime.Name = "rbTotalTime"
+        Me.rbTotalTime.Size = New System.Drawing.Size(14, 13)
+        Me.rbTotalTime.TabIndex = 24
+        Me.rbTotalTime.UseVisualStyleBackColor = True
+        '
+        'rbFreq
+        '
+        Me.rbFreq.AutoSize = True
+        Me.rbFreq.Location = New System.Drawing.Point(10, 42)
+        Me.rbFreq.Name = "rbFreq"
+        Me.rbFreq.Size = New System.Drawing.Size(14, 13)
+        Me.rbFreq.TabIndex = 25
+        Me.rbFreq.UseVisualStyleBackColor = True
+        '
+        'GroupBox4
+        '
+        Me.GroupBox4.Controls.Add(Me.tbLevel)
+        Me.GroupBox4.Controls.Add(Me.rbFreq)
+        Me.GroupBox4.Controls.Add(Me.tbPeriod)
+        Me.GroupBox4.Controls.Add(Me.rbTotalTime)
+        Me.GroupBox4.Controls.Add(Me.Label1)
+        Me.GroupBox4.Controls.Add(Me.tbFreq)
+        Me.GroupBox4.Controls.Add(Me.Label2)
+        Me.GroupBox4.Controls.Add(Me.Label3)
+        Me.GroupBox4.Location = New System.Drawing.Point(131, 11)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(161, 95)
+        Me.GroupBox4.TabIndex = 6
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "Timing"
         '
         'App
         '
@@ -329,6 +372,8 @@ Partial Class App
         Me.GroupBox2.PerformLayout()
         CType(Me.pbSignalView, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox4.ResumeLayout(False)
+        Me.GroupBox4.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -359,4 +404,8 @@ Partial Class App
     Friend WithEvents lTime2 As Label
     Friend WithEvents lTime1 As Label
     Friend WithEvents lTime0 As Label
+    Friend WithEvents tState As Timer
+    Friend WithEvents rbFreq As RadioButton
+    Friend WithEvents rbTotalTime As RadioButton
+    Friend WithEvents GroupBox4 As GroupBox
 End Class

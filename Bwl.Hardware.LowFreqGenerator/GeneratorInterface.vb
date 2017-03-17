@@ -1,7 +1,7 @@
 ﻿Imports Bwl.Hardware.SimplSerial
 
 Public Class GeneratorInterface
-    Public ReadOnly Property Board As New SimplSerialConnector("LowFreqGen", 9600)
+    Public ReadOnly Property Board As New SimplSerialConnector("LowFreq Gen", 9600)
 
     Public Sub New()
         AddHandler Board.DeviceIsConnectedTick, AddressOf DeviceIsConnectedTick
@@ -11,15 +11,20 @@ Public Class GeneratorInterface
 
     End Sub
 
-    Public Sub SendSequence(sequence As Double())
+    Public Sub SendSequence(sequence As Double(), sequenceTimeMs As Double)
         Dim bytes As New List(Of Byte)
+        Dim samplePauseMks = CInt((sequenceTimeMs * 1000 / sequence.Length))
+        Dim spmh As Byte = (samplePauseMks >> 16) Mod 255
+        Dim spmm As Byte = (samplePauseMks >> 8) Mod 255
+        Dim spml As Byte = (samplePauseMks) Mod 255
+        bytes.AddRange({spmh, spmm, spml, 0, 0, 0, 0, 0})
+
         For Each sample In sequence
-            sample = sample * 256
-            If sample < 1 Then sample = 1
+            sample = Math.Round(sample * 256)
+            If sample < 0 Then sample = 0
             If sample > 255 Then sample = 255
             bytes.Add(sample)
         Next
-        bytes.Add(0)
 
         If Board.SS.Request(0, 45, bytes.ToArray).ResponseState <> ResponseState.ok Then Throw New Exception("SendSequence fail")
     End Sub
@@ -29,10 +34,10 @@ Public Class GeneratorInterface
     End Sub
 
     Public Sub Repeat()
-        If Board.SS.Request(0, 55, {0}).ResponseState <> ResponseState.ok Then Throw New Exception("PlayOnce fail")
+        If Board.SS.Request(0, 65, {0}).ResponseState <> ResponseState.ok Then Throw New Exception("Repeat fail")
     End Sub
 
     Public Sub StopRepeat()
-        If Board.SS.Request(0, 55, {0}).ResponseState <> ResponseState.ok Then Throw New Exception("PlayOnce fail")
+        If Board.SS.Request(0, 66, {0}).ResponseState <> ResponseState.ok Then Throw New Exception("StopRepeat fail")
     End Sub
 End Class

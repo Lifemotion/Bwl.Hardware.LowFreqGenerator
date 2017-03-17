@@ -81,9 +81,12 @@ Public Class SimplSerialConnector
                         _BoardConnection = SimplSerialConnectStatus.notFound
                         Threading.Thread.Sleep(FindDeviceIntervalSeconds * 1000)
                     Else
-                        _BoardConnection = SimplSerialConnectStatus.Connected
                         _serial.DeviceSpeed = BoardPortSpeed
                         _ss.Connect()
+                        Dim info = _ss.RequestDeviceInfo(0)
+                        _BoardInfo = info.DeviceName
+                        _BoardConnection = SimplSerialConnectStatus.Connected
+
                     End If
                 Else
                     _BoardConnection = SimplSerialConnectStatus.Connected

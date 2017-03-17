@@ -1,4 +1,6 @@
 #define DEV_NAME "LowFreq Gen 1.0"
+#include <avr/interrupt.h>
+
 
 #include "board/board.h"
 #include "refs-avr/winstar1602.h"
@@ -44,15 +46,19 @@ byte sequence[256];
 byte seq_length=0;
 byte seq_autoplay=0;
 byte seq_position=0;
+uint16_t seq_sample_length=0;
 
 void sserial_process_request(unsigned char portindex)
 {
 	if (sserial_request.command==45)
 	{
-		for (int i=0; i<sserial_request.datalength; i++)
+		seq_sample_length=(((uint16_t)sserial_request.data[1])<<8)+((uint16_t)sserial_request.data[2]);
+		seq_autoplay=0;
+		seq_length=sserial_request.datalength-8;
+		
+		for (int i=8; i<sserial_request.datalength; i++)
 		{
-			sequence[i]=sserial_request.data[i];
-			if (sserial_request.data[i]==0) {seq_length=i;}
+			sequence[i-8]=sserial_request.data[i];
 		}
 		
 		sserial_response.result=128+sserial_request.command;
@@ -65,9 +71,11 @@ void sserial_process_request(unsigned char portindex)
 		for (int i=0; i<seq_length; i++)
 		{
 			timer0_setvalue(sequence[i]);
-			var_delay_us(100);
+			var_delay_us(seq_sample_length);
 			}
 		//timer0_setvalue(0);
+		seq_autoplay=0;
+		seq_position=0;
 		sserial_response.result=128+sserial_request.command;
 		sserial_response.datalength=1;
 		sserial_send_response();
@@ -75,8 +83,8 @@ void sserial_process_request(unsigned char portindex)
 	
 	if (sserial_request.command==65)
 	{
-		byte seq_autoplay=1;
-		byte seq_position=0;
+		seq_autoplay=1;
+		seq_position=0;
 		sserial_response.result=128+sserial_request.command;
 		sserial_response.datalength=1;
 		sserial_send_response();
@@ -84,8 +92,8 @@ void sserial_process_request(unsigned char portindex)
 	
 	if (sserial_request.command==66)
 	{
-		byte seq_autoplay=0;
-		byte seq_position=0;
+		seq_autoplay=0;
+		seq_position=0;
 		sserial_response.result=128+sserial_request.command;
 		sserial_response.datalength=1;
 		sserial_send_response();
@@ -102,29 +110,33 @@ void sserial_init()
 }
 
 
+ISR(USART0_RX_vect)
+{
+	sserial_poll_uart(0);
+}
+
 int main(void)
 {
+	sei();
 	wdt_enable(WDTO_8S);
 	board_init();
 	sserial_init();
 	lcd_init();
 	show_device_info();
+	setbit(UCSR0B,RXCIE0,1);
 	setbit(DDRB,4,1);
-	setbit(PORTB,4,1);
+	//setbit(PORTB,4,1);
 	timer0_setup();
-	timer0_setvalue(10);
+	//timer0_setvalue(10);
 	while(1)
 	{
-		/*if (get_button_1()) {lcd_string_to_linebuffer("Button 1"); lcd_writebuffer();}
-		if (get_button_2()) {lcd_string_to_linebuffer("Button 2"); lcd_writebuffer();}
-		if (get_button_3()) {lcd_string_to_linebuffer("Button 3"); lcd_writebuffer();}
-		if (get_button_4()) {lcd_string_to_linebuffer("Button 4"); lcd_writebuffer();}
-		for (int i=0; i<255; i++)
+		if (seq_autoplay!=0)
 		{
-			timer0_setvalue(255-i);
-			var_delay_us(100);
-		}*/
+			timer0_setvalue(sequence[seq_position]);
+			var_delay_us(seq_sample_length);
+			seq_position+=1;
+			if (seq_position>=seq_length){seq_position=0;}
+		}
 		wdt_reset();
-		sserial_poll_uart(0);
 	}
 }
