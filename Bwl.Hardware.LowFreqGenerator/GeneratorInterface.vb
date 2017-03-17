@@ -1,12 +1,14 @@
 ﻿Imports Bwl.Hardware.SimplSerial
 
 Public Class GeneratorInterface
-    Public ReadOnly Property SS As New SimplSerialBus
+    Public ReadOnly Property Board As New SimplSerialConnector("LowFreqGen", 9600)
 
-    Public Sub Open(port As String)
-        SS.SerialDevice.DeviceAddress = port
-        SS.SerialDevice.DeviceSpeed = 9600
-        SS.Connect()
+    Public Sub New()
+        AddHandler Board.DeviceIsConnectedTick, AddressOf DeviceIsConnectedTick
+    End Sub
+
+    Private Sub DeviceIsConnectedTick()
+
     End Sub
 
     Public Sub SendSequence(sequence As Double())
@@ -19,10 +21,18 @@ Public Class GeneratorInterface
         Next
         bytes.Add(0)
 
-        If SS.Request(0, 45, bytes.ToArray).ResponseState <> ResponseState.ok Then Throw New Exception("SendSequence fail")
+        If Board.SS.Request(0, 45, bytes.ToArray).ResponseState <> ResponseState.ok Then Throw New Exception("SendSequence fail")
     End Sub
 
     Public Sub PlayOnce()
-        If SS.Request(0, 55, {0}).ResponseState <> ResponseState.ok Then Throw New Exception("PlayOnce fail")
+        If Board.SS.Request(0, 55, {0}).ResponseState <> ResponseState.ok Then Throw New Exception("PlayOnce fail")
+    End Sub
+
+    Public Sub Repeat()
+        If Board.SS.Request(0, 55, {0}).ResponseState <> ResponseState.ok Then Throw New Exception("PlayOnce fail")
+    End Sub
+
+    Public Sub StopRepeat()
+        If Board.SS.Request(0, 55, {0}).ResponseState <> ResponseState.ok Then Throw New Exception("PlayOnce fail")
     End Sub
 End Class
