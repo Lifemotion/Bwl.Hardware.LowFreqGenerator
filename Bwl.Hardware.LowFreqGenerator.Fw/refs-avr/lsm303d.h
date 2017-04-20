@@ -31,7 +31,7 @@ typedef unsigned char byte;
 
 #define  LSM_MEASHUREMENT_NORMAL	0b00000000
 
-#define  LSM_MODE_NORMAL		0b00100111
+#define  LSM_MODE_NORMAL		0b00100111 //39
 #define  LSM_MODE_POWERDOWN		0b00000000
 
 //необходимо реализовать

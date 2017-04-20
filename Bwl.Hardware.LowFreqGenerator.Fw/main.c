@@ -1,4 +1,4 @@
-#define DEV_NAME "LowFreq Gen 1.0"
+#define DEV_NAME "LowFreq Gen 1.1"
 #include <avr/interrupt.h>
 
 
@@ -130,15 +130,13 @@ int main(void)
 	//setbit(PORTB,4,1);
 	timer0_setup();
 	//timer0_setvalue(10);
-	PORTC&=(~(1<<PORTC0));
-	PORTC&=(~(1<<PORTC1));
-	
+	//PORTC&=(~(1<<PORTC0));
+	//PORTC&=(~(1<<PORTC1));
 	//TWSR – TWI Status Register
-	TWSR = 3;
-	
+	//TWSR = 3;
 	//TWBR – TWI Bit Rate Register
-	TWBR = 20;
-	lsm_init(LSM_AVERAGING_8,LSM_DATARATE_50,LSM_GAIN_1);
+	//TWBR = 20;
+	//lsm_init(LSM_AVERAGING_8,LSM_DATARATE_50,LSM_GAIN_1);
 
 	while(1)
 	{
@@ -148,13 +146,11 @@ int main(void)
 			var_delay_us(seq_sample_length);
 			seq_position+=1;
 			if (seq_position>=seq_length){seq_position=0;}
-			
-	
 		}
-		//	lsm_init(LSM_AVERAGING_8,LSM_DATARATE_220,LSM_GAIN_1);
-			//volatile mag_data_t data=lsm_read();
-			volatile int temp;
-			lsm_read_temp(temp);	
+		//lsm_init(LSM_AVERAGING_8,LSM_DATARATE_220,LSM_GAIN_1);
+		//volatile mag_data_t data=lsm_read();
+		//volatile int temp;
+		//lsm_read_temp(temp);
 		wdt_reset();
 	}
 }
