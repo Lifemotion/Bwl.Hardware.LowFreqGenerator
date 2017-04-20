@@ -7,6 +7,8 @@
 #include "refs-avr/bwl_strings.h"
 #include "refs-avr/bwl_uart.h"
 #include "refs-avr/bwl_simplserial.h"
+#include "refs-avr/bwl_i2c.h"
+#include "refs-avr/lsm303d.h"
 
 void show_device_info()
 {
@@ -72,14 +74,14 @@ void sserial_process_request(unsigned char portindex)
 		{
 			timer0_setvalue(sequence[i]);
 			var_delay_us(seq_sample_length);
-			}
+		}
 		//timer0_setvalue(0);
 		seq_autoplay=0;
 		seq_position=0;
 		sserial_response.result=128+sserial_request.command;
 		sserial_response.datalength=1;
 		sserial_send_response();
-	}	
+	}
 	
 	if (sserial_request.command==65)
 	{
@@ -88,7 +90,7 @@ void sserial_process_request(unsigned char portindex)
 		sserial_response.result=128+sserial_request.command;
 		sserial_response.datalength=1;
 		sserial_send_response();
-	}	
+	}
 	
 	if (sserial_request.command==66)
 	{
@@ -97,7 +99,7 @@ void sserial_process_request(unsigned char portindex)
 		sserial_response.result=128+sserial_request.command;
 		sserial_response.datalength=1;
 		sserial_send_response();
-	}	
+	}
 }
 
 void sserial_init()
@@ -128,6 +130,16 @@ int main(void)
 	//setbit(PORTB,4,1);
 	timer0_setup();
 	//timer0_setvalue(10);
+	PORTC&=(~(1<<PORTC0));
+	PORTC&=(~(1<<PORTC1));
+	
+	//TWSR – TWI Status Register
+	TWSR = 3;
+	
+	//TWBR – TWI Bit Rate Register
+	TWBR = 20;
+	lsm_init(LSM_AVERAGING_8,LSM_DATARATE_50,LSM_GAIN_1);
+
 	while(1)
 	{
 		if (seq_autoplay!=0)
@@ -136,7 +148,13 @@ int main(void)
 			var_delay_us(seq_sample_length);
 			seq_position+=1;
 			if (seq_position>=seq_length){seq_position=0;}
+			
+	
 		}
+		//	lsm_init(LSM_AVERAGING_8,LSM_DATARATE_220,LSM_GAIN_1);
+			//volatile mag_data_t data=lsm_read();
+			volatile int temp;
+			lsm_read_temp(temp);	
 		wdt_reset();
 	}
 }
