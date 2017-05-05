@@ -1,9 +1,11 @@
 #include <avr/io.h>
 #include "lsm303d.h"
-/*
-#define READ	0x33
-#define WRITE	0x32
-*/
+
+//SA0=1
+//#define READ	0x33
+//#define WRITE	0x32
+
+//SA0=0
 #define READ	0x31
 #define WRITE	0x30
 
@@ -113,7 +115,7 @@ void lsm_init(byte averaging_code, byte datarate_code, byte gain_code)
 	
 	i2c_start();
 	i2c_write_byte(WRITE);
-	i2c_write_byte(0x20);
+	i2c_write_byte(0x28);
 	i2c_start();		  
 	i2c_write_byte(READ);
 		//00 - CfgA
@@ -123,6 +125,7 @@ void lsm_init(byte averaging_code, byte datarate_code, byte gain_code)
 	//1-0 - Mode 00 - Normal
 	volatile byte byte3=i2c_read_byte();
 	volatile byte byte4=i2c_read_last_byte();
+	i2c_stop();	
 	i2c_stop();	
 	
 	/*i2c_start();

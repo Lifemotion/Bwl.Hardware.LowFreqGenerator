@@ -133,10 +133,10 @@ int main(void)
 	//PORTC&=(~(1<<PORTC0));
 	//PORTC&=(~(1<<PORTC1));
 	//TWSR – TWI Status Register
-	//TWSR = 3;
+	TWSR = 3;
 	//TWBR – TWI Bit Rate Register
-	//TWBR = 20;
-	//lsm_init(LSM_AVERAGING_8,LSM_DATARATE_50,LSM_GAIN_1);
+	TWBR = 20;
+	lsm_init(LSM_AVERAGING_8,LSM_DATARATE_50,LSM_GAIN_1);
 
 	while(1)
 	{
@@ -149,8 +149,8 @@ int main(void)
 		}
 		//lsm_init(LSM_AVERAGING_8,LSM_DATARATE_220,LSM_GAIN_1);
 		//volatile mag_data_t data=lsm_read();
-		//volatile int temp;
-		//lsm_read_temp(temp);
+		volatile int temp;
+		lsm_read_temp(temp);
 		wdt_reset();
 	}
 }
