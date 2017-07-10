@@ -2,13 +2,13 @@
 
 Public Class GeneratorInterface
     Public ReadOnly Property Board As New SimplSerialConnector("LowFreq Gen", 9600)
-
+    Private _accelerometer As New AccelerometerDriver(Board.SS)
     Public Sub New()
         AddHandler Board.DeviceIsConnectedTick, AddressOf DeviceIsConnectedTick
     End Sub
 
     Private Sub DeviceIsConnectedTick()
-
+        Dim accData = _accelerometer.GetData()
     End Sub
 
     Public Sub SendSequence(sequence As Double(), sequenceTimeMs As Double)
@@ -39,5 +39,9 @@ Public Class GeneratorInterface
 
     Public Sub StopRepeat()
         If Board.SS.Request(0, 66, {0}).ResponseState <> ResponseState.ok Then Throw New Exception("StopRepeat fail")
+    End Sub
+
+    Public Sub UpdateAccelerometer()
+
     End Sub
 End Class

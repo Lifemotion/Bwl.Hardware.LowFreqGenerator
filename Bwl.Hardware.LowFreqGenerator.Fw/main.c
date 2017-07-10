@@ -8,7 +8,7 @@
 #include "refs-avr/bwl_uart.h"
 #include "refs-avr/bwl_simplserial.h"
 #include "refs-avr/bwl_i2c.h"
-#include "refs-avr/lsm303d.h"
+#include "refs-avr/h3lis331.h"
 
 void show_device_info()
 {
@@ -52,6 +52,18 @@ uint16_t seq_sample_length=0;
 
 void sserial_process_request(unsigned char portindex)
 {
+	
+	if(sserial_request.command == 10){
+		if(sserial_request.datalength>0){
+			h3lis331_init(sserial_request.data[0]);
+			var_delay_ms(10);
+		}
+		h3lis331_fill_data_array(&sserial_response.data[0]);
+		sserial_response.datalength = 6;
+		sserial_response.result = 200;
+		sserial_send_response();
+	}
+
 	if (sserial_request.command==45)
 	{
 		seq_sample_length=(((uint16_t)sserial_request.data[1])<<8)+((uint16_t)sserial_request.data[2]);
@@ -129,15 +141,11 @@ int main(void)
 	setbit(DDRB,4,1);
 	//setbit(PORTB,4,1);
 	timer0_setup();
-	//timer0_setvalue(10);
-	//PORTC&=(~(1<<PORTC0));
-	//PORTC&=(~(1<<PORTC1));
-	//TWSR – TWI Status Register
-	TWSR = 3;
-	//TWBR – TWI Bit Rate Register
-	TWBR = 20;
-	lsm_init(LSM_AVERAGING_8,LSM_DATARATE_50,LSM_GAIN_1);
-
+	PORTC	 |=(1<<PORTC0);
+	PORTC	 |=(1<<PORTC1);
+	TWSR = 0;
+	TWBR = 72;
+	h3lis331_init(H3LIS331_100g_SCALE);
 	while(1)
 	{
 		if (seq_autoplay!=0)
@@ -147,10 +155,6 @@ int main(void)
 			seq_position+=1;
 			if (seq_position>=seq_length){seq_position=0;}
 		}
-		//lsm_init(LSM_AVERAGING_8,LSM_DATARATE_220,LSM_GAIN_1);
-		//volatile mag_data_t data=lsm_read();
-		volatile int temp;
-		lsm_read_temp(temp);
 		wdt_reset();
 	}
 }
