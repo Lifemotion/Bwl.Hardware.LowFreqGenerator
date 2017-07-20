@@ -3,7 +3,7 @@
 
 
 #define F_CPU 12000000UL
-#define BAUD 9600
+#define BAUD 19200
 
 #define UART_USB 0
 #define UART_EXT 0

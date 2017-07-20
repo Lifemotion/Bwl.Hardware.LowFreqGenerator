@@ -56,9 +56,7 @@ void sserial_process_request(unsigned char portindex)
 	if(sserial_request.command == 10){
 		if(sserial_request.datalength>0){
 			h3lis331_init(sserial_request.data[0]);
-			var_delay_ms(10);
 		}
-		h3lis331_fill_data_array(&sserial_response.data[0]);
 		sserial_response.datalength = 6;
 		sserial_response.result = 200;
 		sserial_send_response();
@@ -153,6 +151,10 @@ int main(void)
 			timer0_setvalue(sequence[seq_position]);
 			var_delay_us(seq_sample_length);
 			seq_position+=1;
+			if(seq_position==seq_length/2)
+			{
+				h3lis331_fill_data_array(&sserial_response.data[0]);
+			}
 			if (seq_position>=seq_length){seq_position=0;}
 		}
 		wdt_reset();

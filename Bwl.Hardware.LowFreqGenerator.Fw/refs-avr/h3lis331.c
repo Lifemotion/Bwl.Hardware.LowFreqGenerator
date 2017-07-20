@@ -28,7 +28,7 @@
 			mux_value = 400.0/32768.0;
 			break;
 		default:
-			i2c_write_byte(0x80);
+			i2c_write_byte(0x00);
 			mux_value = 100.0/32768.0;
 	}
 	i2c_stop();
