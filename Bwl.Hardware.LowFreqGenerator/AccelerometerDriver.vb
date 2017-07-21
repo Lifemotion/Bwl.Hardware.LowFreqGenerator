@@ -26,17 +26,17 @@ Public Class AccelerometerDriver
         End If
     End Sub
 
-    Function GetData() As AccelerometerData
-        Dim response = _ss.Request(0, 10, {})
-        Dim acc = New AccelerometerData()
-        If response.ResponseState <> ResponseState.ok Then
-            Throw New Exception("Response incorrect")
-        Else
-            acc.X = BitConverter.ToInt16(response.Data, 0) * _mux
-            acc.Y = BitConverter.ToInt16(response.Data, 2) * _mux
-            acc.Z = BitConverter.ToInt16(response.Data, 4) * _mux
-        End If
-        Return acc
+    Function GetData() As Byte()
+        Try
+            Dim response = _ss.Request(New SSRequest(0, 10, {}), 20)
+            Return response.Data
+
+        Catch ex As Exception
+
+        End Try
+        Dim bytes(100) As Byte
+        Return bytes
+
     End Function
 
 End Class

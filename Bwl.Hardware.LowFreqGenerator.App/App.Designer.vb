@@ -27,6 +27,7 @@ Partial Class App
         Me.tbConnectionInfo = New System.Windows.Forms.TextBox()
         Me.bPlayOnce = New System.Windows.Forms.Button()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.lAccText = New System.Windows.Forms.Label()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.tbLevel = New System.Windows.Forms.TextBox()
         Me.rbFreq = New System.Windows.Forms.RadioButton()
@@ -51,9 +52,10 @@ Partial Class App
         Me.bRepeat = New System.Windows.Forms.Button()
         Me.bStop = New System.Windows.Forms.Button()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
-        Me.bFind = New System.Windows.Forms.Button()
         Me.tState = New System.Windows.Forms.Timer(Me.components)
-        Me.lAccText = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -94,6 +96,9 @@ Partial Class App
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.Label6)
+        Me.GroupBox2.Controls.Add(Me.Label5)
+        Me.GroupBox2.Controls.Add(Me.Label4)
         Me.GroupBox2.Controls.Add(Me.lAccText)
         Me.GroupBox2.Controls.Add(Me.GroupBox4)
         Me.GroupBox2.Controls.Add(Me.bGenerate)
@@ -114,6 +119,14 @@ Partial Class App
         Me.GroupBox2.TabIndex = 4
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Generator"
+        '
+        'lAccText
+        '
+        Me.lAccText.AutoSize = True
+        Me.lAccText.Location = New System.Drawing.Point(318, 17)
+        Me.lAccText.Name = "lAccText"
+        Me.lAccText.Size = New System.Drawing.Size(0, 13)
+        Me.lAccText.TabIndex = 24
         '
         'GroupBox4
         '
@@ -341,7 +354,6 @@ Partial Class App
         '
         'GroupBox3
         '
-        Me.GroupBox3.Controls.Add(Me.bFind)
         Me.GroupBox3.Controls.Add(Me.bRepeat)
         Me.GroupBox3.Controls.Add(Me.bStop)
         Me.GroupBox3.Controls.Add(Me.bPlayOnce)
@@ -353,27 +365,37 @@ Partial Class App
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Control"
         '
-        'bFind
-        '
-        Me.bFind.Location = New System.Drawing.Point(7, 105)
-        Me.bFind.Name = "bFind"
-        Me.bFind.Size = New System.Drawing.Size(85, 23)
-        Me.bFind.TabIndex = 6
-        Me.bFind.Text = "Find Frequency"
-        Me.bFind.UseVisualStyleBackColor = True
-        '
         'tState
         '
         Me.tState.Enabled = True
         Me.tState.Interval = 500
         '
-        'lAccText
+        'Label4
         '
-        Me.lAccText.AutoSize = True
-        Me.lAccText.Location = New System.Drawing.Point(318, 17)
-        Me.lAccText.Name = "lAccText"
-        Me.lAccText.Size = New System.Drawing.Size(0, 13)
-        Me.lAccText.TabIndex = 24
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(312, 16)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(25, 13)
+        Me.Label4.TabIndex = 26
+        Me.Label4.Text = "25g"
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(312, 233)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(28, 13)
+        Me.Label5.TabIndex = 27
+        Me.Label5.Text = "-25g"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(318, 130)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(13, 13)
+        Me.Label6.TabIndex = 28
+        Me.Label6.Text = "0"
         '
         'App
         '
@@ -431,6 +453,8 @@ Partial Class App
     Friend WithEvents rbFreq As RadioButton
     Friend WithEvents rbTotalTime As RadioButton
     Friend WithEvents GroupBox4 As GroupBox
-    Friend WithEvents bFind As Button
     Friend WithEvents lAccText As Label
+    Friend WithEvents Label6 As Label
+    Friend WithEvents Label5 As Label
+    Friend WithEvents Label4 As Label
 End Class

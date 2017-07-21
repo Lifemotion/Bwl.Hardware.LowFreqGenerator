@@ -9,7 +9,7 @@ End Enum
 
 Public Class SimplSerialConnector
     Public ReadOnly Property BoardNameToFind As String = ""
-    Public ReadOnly Property BoardPortSpeed As Integer = 38400
+    Public ReadOnly Property BoardPortSpeed As Integer = 9600
     Public ReadOnly Property BoardConnection As SimplSerialConnectStatus
     Public ReadOnly Property BoardInfo As String = ""
 

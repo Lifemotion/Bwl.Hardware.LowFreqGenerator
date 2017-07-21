@@ -11,19 +11,8 @@ Public Class GeneratorInterface
 
     End Sub
 
-    Public Function GetMaxAcceleration(avverage As Integer) As AccelerometerData
-        Dim maxData = _accelerometer.GetData()
-        For i = 0 To avverage
-            Dim tempData = _accelerometer.GetData()
-            If (Math.Abs(tempData.X) + Math.Abs(tempData.Y) + Math.Abs(tempData.Z) > Math.Abs(maxData.X) + Math.Abs(maxData.Y) + Math.Abs(maxData.Z)) Then
-                maxData = tempData
-                Threading.Thread.Sleep(100)
-            End If
-        Next
-        maxData.X = Math.Abs(maxData.X)
-        maxData.Y = Math.Abs(maxData.Y)
-        maxData.Z = Math.Abs(maxData.Z)
-        Return maxData
+    Public Function GetAcceleration() As Byte()
+        Return _accelerometer.GetData()
     End Function
 
     Public Sub SendSequence(sequence As Double(), sequenceTimeMs As Double)

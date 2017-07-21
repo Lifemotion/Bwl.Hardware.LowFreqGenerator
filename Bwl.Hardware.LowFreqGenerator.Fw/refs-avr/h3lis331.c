@@ -20,11 +20,11 @@
 	i2c_write_byte(0x23);
 	switch(scale){
 		case 1:
-			i2c_write_byte(0x90);
+			i2c_write_byte(0x10);
 			mux_value = 200.0/32768.0;
 			break;
 		case 2:
-			i2c_write_byte(0xB0);
+			i2c_write_byte(0x30);
 			mux_value = 400.0/32768.0;
 			break;
 		default:

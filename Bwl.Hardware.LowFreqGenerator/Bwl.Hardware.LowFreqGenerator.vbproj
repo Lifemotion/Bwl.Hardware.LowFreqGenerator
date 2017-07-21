@@ -86,7 +86,6 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccelerometerData.vb" />
     <Compile Include="AccelerometerDriver.vb" />
     <Compile Include="GeneratorInterface.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
