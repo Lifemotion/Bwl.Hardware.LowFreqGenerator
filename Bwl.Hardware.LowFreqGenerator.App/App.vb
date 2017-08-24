@@ -218,4 +218,8 @@
         Dim th = New Threading.Thread(AddressOf AccelerationRequestProcess)
         th.Start()
     End Sub
+
+    Private Sub App_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        End
+    End Sub
 End Class
